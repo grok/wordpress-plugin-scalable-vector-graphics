@@ -30,4 +30,4 @@ An example of using all attributes:
 = 1.0 =
 * I N C E P T I O N
 = 1.1 =
-* Fixing a typo. This typo was caused ONLY SVG files to be allowed to upload via the media uploader.
+* Fixing a typo. This typo caused ONLY SVG files to be allowed to upload via the media uploader.
