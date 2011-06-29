@@ -31,3 +31,5 @@ An example of using all attributes:
 * I N C E P T I O N
 = 1.1 =
 * Fixing a typo. This typo caused ONLY SVG files to be allowed to upload via the media uploader.
+= 1.2 =
+* One less required parameter and a graceful fail over to a valid implementation type. Props @Phil
