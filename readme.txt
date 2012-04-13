@@ -28,3 +28,4 @@ SVG files are two-dimensional vector graphics, that can be both static and dynam
 * Shortcodes are no longer needed, you can now use SVG files as you would any other image.
 * Previews now show up in the media area for SVG files.
 * IMPORTANT: Anyone using the version prior to 2.0 were using shortcodes to display SVG files. You will have to go back and replace those shortcodes with actual image tags. If you're not familiar with HTML, you can just delete the shortcode out of the page/post and then insert the SVG file as you would any other image.
+* Thanks to the guys over at mozilla.org for kicking me in the butt to actually fix this thing: https://bugzilla.mozilla.org/show_bug.cgi?id=721830
