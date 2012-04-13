@@ -25,7 +25,7 @@
 
 class scalable_vector_graphics {
 
-	function __construct() {
+	public function execute() {
 		add_filter( 'upload_mimes' , array( &$this , 'allow_svg_uploads' ) );
 		add_shortcode( 'svg' , array( &$this , 'process_shortcode' ) );
 	}
@@ -67,6 +67,7 @@ class scalable_vector_graphics {
 
 if ( class_exists( 'scalable_vector_graphics' ) and !isset( $scalable_vector_graphics ) ) {
 	$scalable_vector_graphics = new scalable_vector_graphics();
+	$scalable_vector_graphics->execute();
 }
 
 ?>
