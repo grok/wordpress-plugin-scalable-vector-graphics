@@ -3,9 +3,9 @@
  * Plugin Name: Scalable Vector Graphics (SVG)
  * Plugin URI: http://sterlinghamilton.com/scalable-vector-graphics-plugin
  * Description: Scalable Vector Graphics are two-dimensional vector graphics, that can be both static and dynamic. This plugin allows your to easily use them on your site.
- * Version: 1.2
+ * Version: 2.0
  * Author: Sterling Hamilton
- * Author URI: http://www.sterlinghamilton.com
+ * Author URI: http://sterlinghamilton.com
  * License: GPLv2 or later
 
  * This program is free software; you can redistribute it and/or
@@ -27,48 +27,34 @@ class scalable_vector_graphics {
 
 	public function execute() {
 		$this->_enable_svg_mime_type();
-		$this->_enable_shortcode_processing();
 	}
 
 	private function _enable_svg_mime_type() {
 		add_filter( 'upload_mimes', array( &$this, 'allow_svg_uploads' ) );
 	}
 
-	private function _enable_shortcode_processing() {
-		add_shortcode( 'svg', array( &$this, 'process_shortcode' ) );
+	private function _sanitize_input( $input ) {
+		if( is_scalar( $input ) ) {
+			return wp_kses( $input );
+		} else {
+			$this->_error( 'Unable to sanitize given input: Not scalar: integer, float, string or boolean.' );
+		}
+
+		return false;
+	}
+
+	private function _error( $message ) {
+		return new WP_Error( __CLASS__, __METHOD__ . __( $message ) );
 	}
 
 	public function allow_svg_uploads( $existing_mime_types = array() ) {
-		$new_mime_types = $existing_mime_types;
-		$new_mime_types[ 'svg' ] = 'mime/type';
-
-		return $new_mime_types;
+		return $this->_add_mime_type( $existing_mime_types );
 	}
 
-	public function process_shortcode( $atts ) {
-		$valid_attributes = array( 'src' , 'style' , 'type' , 'width' , 'height' );
+	private function _add_mime_type( $mime_types ) {
+		$mime_types[ 'svg' ] = 'image/svg+xml';
 
-		$content = NULL;
-
-		foreach( $atts as $attribute => $value ) {
-			if( ! in_array( $attribute, $valid_attributes ) ) {
-				$content .= "\n" . '<!-- Invalid attribute ignored: ' . $attribute . ' -->' . "\n";
-			}
-		}
-
-		switch( $atts[ 'type' ] ) {
-			case 'iframe':
-				$content .= '<iframe src="' . $atts[ 'src' ] . '" width="' . $atts[ 'width' ] . '" height="' . $atts[ 'height' ] . '" style="' . $atts[ 'style' ] . '">';
-				$content .= '</iframe>';
-			break;
-			case 'embed':
-			default:
-				$content .= '<embed src="' . $atts[ 'src' ] . '" width="' . $atts[ 'width' ] . '" height="' . $atts[ 'height' ] . '" ';
-				$content .= 'type="image/svg+xml" pluginspage="http://www.adobe.com/svg/viewer/install/" style="' . $atts[ 'style' ] . '" /> ';
-			break;
-		}
-
-		return $content;
+		return $mime_types;
 	}
 
 }
