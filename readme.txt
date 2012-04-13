@@ -33,3 +33,8 @@ An example of using all attributes:
 * Fixing a typo. This typo caused ONLY SVG files to be allowed to upload via the media uploader.
 = 1.2 =
 * One less required parameter and a graceful fail over to a valid implementation type. Props @Phil
+= 2.0 =
+* I broke everything. I'm sorry, but it had to be done.
+* Basically how I had approached the problem before was wrong. It is now being done properly using the correct mime/type.
+* Shortcodes are no longer needed, you can now use SVG files as you would any other image.
+* Previews now show up in the media area for SVG files.
