@@ -26,7 +26,15 @@
 class scalable_vector_graphics {
 
 	public function execute() {
+		$this->_enable_svg_mime_type();
+		$this->_enable_shortcode_processing();
+	}
+
+	private function _enable_svg_mime_type() {
 		add_filter( 'upload_mimes', array( &$this, 'allow_svg_uploads' ) );
+	}
+
+	private function _enable_shortcode_processing() {
 		add_shortcode( 'svg', array( &$this, 'process_shortcode' ) );
 	}
 
