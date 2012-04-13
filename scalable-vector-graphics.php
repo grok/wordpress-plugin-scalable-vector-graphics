@@ -26,24 +26,24 @@
 class scalable_vector_graphics {
 
 	public function execute() {
-		add_filter( 'upload_mimes' , array( &$this , 'allow_svg_uploads' ) );
-		add_shortcode( 'svg' , array( &$this , 'process_shortcode' ) );
+		add_filter( 'upload_mimes', array( &$this, 'allow_svg_uploads' ) );
+		add_shortcode( 'svg', array( &$this, 'process_shortcode' ) );
 	}
 
-	function allow_svg_uploads( $existing_mime_types = array() ) {
+	public function allow_svg_uploads( $existing_mime_types = array() ) {
 		$new_mime_types = $existing_mime_types;
 		$new_mime_types[ 'svg' ] = 'mime/type';
 
 		return $new_mime_types;
 	}
 
-	function process_shortcode( $atts ) {
+	public function process_shortcode( $atts ) {
 		$valid_attributes = array( 'src' , 'style' , 'type' , 'width' , 'height' );
 
 		$content = NULL;
 
 		foreach( $atts as $attribute => $value ) {
-			if( ! in_array( $attribute , $valid_attributes ) ) {
+			if( ! in_array( $attribute, $valid_attributes ) ) {
 				$content .= "\n" . '<!-- Invalid attribute ignored: ' . $attribute . ' -->' . "\n";
 			}
 		}
@@ -65,7 +65,7 @@ class scalable_vector_graphics {
 
 }
 
-if ( class_exists( 'scalable_vector_graphics' ) and !isset( $scalable_vector_graphics ) ) {
+if ( class_exists( 'scalable_vector_graphics' ) and ! isset( $scalable_vector_graphics ) ) {
 	$scalable_vector_graphics = new scalable_vector_graphics();
 	$scalable_vector_graphics->execute();
 }
