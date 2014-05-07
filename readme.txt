@@ -10,6 +10,12 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 SVG files are two-dimensional vector graphics, that can be both static and dynamic. This plugin allows your to easily use them on your site.
 
+== Description ==
+
+SVG files are two-dimensional vector graphics, that can be both static and dynamic. This plugin allows you to easily use them on your site.
+
+The main project page is located here: [http://sterlinghamilton.com/projects/scalable-vector-graphics-svg/](http://sterlinghamilton.com/projects/scalable-vector-graphics-svg/ "Scalable Vector Graphics (SVG) | Sterling Hamilton")
+
 == Installation ==
 
 1. Upload `scalable-vector-graphics.php` to the `/wp-content/plugins/` directory
