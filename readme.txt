@@ -1,10 +1,12 @@
 === Scalable Vector Graphics (SVG) ===
 Contributors: sterlo
 Donate link: http://sterlinghamilton.com/
-Tags: svg, scalable vector graphics
+Tags: svg, scalable, vector, graphics, mime, type, images, uploads
 Requires at least: 3.0
-Tested up to: 3.3.1
+Tested up to: 3.9
 Stable tag: trunk
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 SVG files are two-dimensional vector graphics, that can be both static and dynamic. This plugin allows your to easily use them on your site.
 
