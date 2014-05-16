@@ -27,6 +27,7 @@ class scalable_vector_graphics {
 
 	public function execute() {
 		$this->_enable_svg_mime_type();
+		add_action( 'admin_enqueue_scripts', array( &$this, 'admin_css' ) );
 	}
 
 	private function _enable_svg_mime_type() {
@@ -43,6 +44,14 @@ class scalable_vector_graphics {
 		return $mime_types;
 	}
 
+	public function admin_css() {
+		$css = "
+			img.attachment-80x60[src$='.svg'] {
+				width: 100% !important;
+				height: auto !important;
+			}";
+		wp_add_inline_style( 'wp-admin', $css );
+	}
 }
 
 if ( class_exists( 'scalable_vector_graphics' ) and ! isset( $scalable_vector_graphics ) ) {
