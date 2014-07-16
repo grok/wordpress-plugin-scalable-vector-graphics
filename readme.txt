@@ -19,6 +19,7 @@ The main project page is located here: [http://sterlinghamilton.com/projects/sca
 Warning: Understanding that uploading any file to the system is a potential security risk, it is strongly recommended to only let trusted users to have upload privileges.
 
 Resources for understanding security risks:
+
 * http://security.stackexchange.com/questions/11384/exploits-or-other-security-risks-with-svg-upload
 * https://www.youtube.com/watch?v=v-a77QdoK2I
 
