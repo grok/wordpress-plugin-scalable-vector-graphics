@@ -46,3 +46,7 @@ Resources for understanding security risks:
 = 2.2.1 =
 * Added a security library to scan all uploaded SVG files. It has a list of "expected" elements and attributes, if the file contains thing it does not expect, it removes them. This will include things like Javascript.
 * The security cannot be perfect and it is recommended to only provide upload privileges to trusted users.
+* Props to thedwards for bringing this to my attention.
+= 2.3.1 =
+* Added inline styling to tha administration area so SVG attachments will show up in list/grid views.
+* Props to shield-9 (Daisuke Takahashi) for the code.
