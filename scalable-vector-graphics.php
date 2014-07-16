@@ -43,9 +43,9 @@ class scalable_vector_graphics {
 			$sanitized_svg = $svg->saveSVG();
 
 			global $wp_filesystem;
-			$creds = request_filesystem_credentials(site_url() . '/wp-admin/', '', FALSE, FALSE, array());
-			if ( ! WP_Filesystem( $creds ) ) {
-				request_filesystem_credentials( $url, '', TRUE, FALSE, NULL );
+			$credentials = request_filesystem_credentials(site_url() . '/wp-admin/', '', FALSE, FALSE, array());
+			if ( ! WP_Filesystem( $credentials ) ) {
+				request_filesystem_credentials( site_url() . '/wp-admin/', '', TRUE, FALSE, NULL );
 			}
 
 			// Using the filesystem API provided by WordPress, we replace the contents of the temporary file and then let the process continue as normal.
