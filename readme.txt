@@ -3,7 +3,7 @@ Contributors: sterlo
 Donate link: http://sterlinghamilton.com/
 Tags: svg, scalable, vector, graphics, mime, type, images, uploads
 Requires at least: 3.0
-Tested up to: 3.9
+Tested up to: 4.0-beta1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -15,6 +15,12 @@ SVG files are two-dimensional vector graphics, that can be both static and dynam
 SVG files are two-dimensional vector graphics, that can be both static and dynamic. This plugin allows you to easily use them on your site.
 
 The main project page is located here: [http://sterlinghamilton.com/projects/scalable-vector-graphics-svg/](http://sterlinghamilton.com/projects/scalable-vector-graphics-svg/ "Scalable Vector Graphics (SVG) | Sterling Hamilton")
+
+Warning: Understanding that uploading any file to the system is a potential security risk, it is strongly recommended to only let trusted users to have upload privileges.
+
+Resources for understanding security risks:
+* http://security.stackexchange.com/questions/11384/exploits-or-other-security-risks-with-svg-upload
+* https://www.youtube.com/watch?v=v-a77QdoK2I
 
 == Installation ==
 
@@ -37,3 +43,6 @@ The main project page is located here: [http://sterlinghamilton.com/projects/sca
 * Previews now show up in the media area for SVG files.
 * IMPORTANT: Anyone using the version prior to 2.0 were using shortcodes to display SVG files. You will have to go back and replace those shortcodes with actual image tags. If you're not familiar with HTML, you can just delete the shortcode out of the page/post and then insert the SVG file as you would any other image.
 * Thanks to the guys over at mozilla.org for kicking me in the butt to actually fix this thing: https://bugzilla.mozilla.org/show_bug.cgi?id=721830
+= 2.2.1 =
+* Added a security library to scan all uploaded SVG files. It has a list of "expected" elements and attributes, if the file contains thing it does not expect, it removes them. This will include things like Javascript.
+* The security cannot be perfect and it is recommended to only provide upload privileges to trusted users.

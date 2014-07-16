@@ -3,7 +3,7 @@
  * Plugin Name: Scalable Vector Graphics (SVG)
  * Plugin URI: http://sterlinghamilton.com/projects/scalable-vector-graphics-svg/
  * Description: Scalable Vector Graphics are two-dimensional vector graphics, that can be both static and dynamic. This plugin allows your to easily use them on your site.
- * Version: 2.1.1
+ * Version: 2.2.1
  * Author: Sterling Hamilton
  * Author URI: http://sterlinghamilton.com
  * License: GPLv2 or later
@@ -27,6 +27,31 @@ class scalable_vector_graphics {
 
 	public function execute() {
 		$this->_enable_svg_mime_type();
+		add_filter( 'wp_handle_upload_prefilter', array($this, 'sanitize_svg') );
+	}
+
+	// Here we use a whitelist library to attempt at sanitizing potential security threats.
+	public function sanitize_svg($file) {
+		if( $file[ 'type' ] == 'image/svg+xml' ) {
+			require_once 'library/class.svg-sanitizer.php';
+
+			$svg = new SvgSanitizer();
+			// We read in the temporary file prior to WordPress moving it.
+			$svg->load( $file[ 'tmp_name' ] );
+			$svg->sanitize();
+			$sanitized_svg = $svg->saveSVG();
+
+			global $wp_filesystem;
+			$creds = request_filesystem_credentials(site_url() . '/wp-admin/', '', FALSE, FALSE, array());
+			if ( !WP_Filesystem( $creds ) ) {
+				request_filesystem_credentials( $url, '', TRUE, FALSE, NULL );
+			}
+
+			// Using the filesystem API provided by WordPress, we replace the contents of the temporary file and then let the process continue as normal.
+			$replace_uploaded_file = $wp_filesystem->put_contents($file['tmp_name'], $sanitized_svg, FS_CHMOD_FILE);
+		}
+
+		return $file;
 	}
 
 	private function _enable_svg_mime_type() {
