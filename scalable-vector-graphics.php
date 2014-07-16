@@ -28,11 +28,11 @@ class scalable_vector_graphics {
 	public function execute() {
 		$this->_enable_svg_mime_type();
 		add_filter( 'wp_handle_upload_prefilter', array( $this, 'sanitize_svg' ) );
-		add_action( 'admin_enqueue_scripts', array( $this, 'admin_css' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'styles' ) );
 	}
 
 	// Here we use a whitelist library to attempt at sanitizing potential security threats.
-	public function sanitize_svg($file) {
+	public function sanitize_svg( $file ) {
 		if( $file[ 'type' ] == 'image/svg+xml' ) {
 			require_once 'library/class.svg-sanitizer.php';
 
@@ -44,7 +44,7 @@ class scalable_vector_graphics {
 
 			global $wp_filesystem;
 			$creds = request_filesystem_credentials(site_url() . '/wp-admin/', '', FALSE, FALSE, array());
-			if ( !WP_Filesystem( $creds ) ) {
+			if ( ! WP_Filesystem( $creds ) ) {
 				request_filesystem_credentials( $url, '', TRUE, FALSE, NULL );
 			}
 
@@ -69,13 +69,8 @@ class scalable_vector_graphics {
 		return $mime_types;
 	}
 
-	public function admin_css() {
-		$css = "
-			img.attachment-80x60[src$='.svg'] {
-				width: 100% !important;
-				height: auto !important;
-			}";
-		wp_add_inline_style( 'wp-admin', $css );
+	public function styles() {
+		wp_add_inline_style( 'wp-admin', "img.attachment-80x60[src$='.svg'] { width: 100%; height: auto; }" );
 	}
 }
 
