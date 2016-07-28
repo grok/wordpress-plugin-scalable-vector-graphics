@@ -46,7 +46,7 @@ class scalable_vector_graphics {
 	}
 
 	public function styles() {
-		wp_add_inline_style( 'wp-admin', "img.attachment-80x60[src$='.svg'] { width: 100%; height: auto; }" );
+		wp_add_inline_style( 'wp-admin', ".media .media-icon img[src$='.svg'] { width: auto; height: auto; }" );
 	}
 
 	public function plugin_prepare_attachment_for_js_filter( $response, $attachment, $meta ) {
