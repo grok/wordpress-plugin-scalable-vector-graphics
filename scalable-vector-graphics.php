@@ -23,64 +23,56 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA	02110-1301, USA.
 */
 
-class scalable_vector_graphics {
+namespace SterlingHamilton\Plugins\ScalableVectorGraphics;
 
-	public function execute() {
-		$this->_enable_svg_mime_type();
-		add_action( 'admin_enqueue_scripts', array( $this, 'styles' ) );
-	}
+function add_mime_type( $mime_types ) {
+	$mime_types[ 'svg' ] = 'image/svg+xml';
 
-	private function _enable_svg_mime_type() {
-		add_filter( 'upload_mimes', array( &$this, 'allow_svg_uploads' ) );
-		add_filter( 'wp_prepare_attachment_for_js', array( &$this, 'plugin_prepare_attachment_for_js_filter' ), 10, 3 );
-	}
-
-	public function allow_svg_uploads( $existing_mime_types = array() ) {
-		return $this->_add_mime_type( $existing_mime_types );
-	}
-
-	private function _add_mime_type( $mime_types ) {
-		$mime_types[ 'svg' ] = 'image/svg+xml';
-
-		return $mime_types;
-	}
-
-	public function styles() {
-		wp_add_inline_style( 'wp-admin', ".media .media-icon img[src$='.svg'] { width: auto; height: auto; }" );
-		wp_add_inline_style( 'wp-admin', "#postimagediv .inside img[src$='.svg'] { width: 100%; height: auto; }" );
-	}
-
-	public function plugin_prepare_attachment_for_js_filter( $response, $attachment, $meta ) {
-		if( $response['mime'] == 'image/svg+xml' && empty( $response['sizes'] ) ) {
-			$svg_file_path = get_attached_file( $attachment->ID );
-			$dimensions = $this->_get_dimensions( $svg_file_path );
-
-			$response[ 'sizes' ] = array(
-					'full' => array(
-						'url' => $response[ 'url' ],
-						'width' => $dimensions->width,
-						'height' => $dimensions->height,
-						'orientation' => $dimensions->width > $dimensions->height ? 'landscape' : 'portrait'
-				)
-			);
-		}
-
-		return $response;
-	}
-
-	private function _get_dimensions( $svg ) {
-		$svg = simplexml_load_file( $svg );
-		$attributes = $svg->attributes();
-		$width = (string) $attributes->width;
-		$height = (string) $attributes->height;
-
-		return (object) array( 'width' => $width, 'height' => $height );
-	}
+	return $mime_types;
 }
 
-if ( class_exists( 'scalable_vector_graphics' ) and ! isset( $scalable_vector_graphics ) ) {
-	$scalable_vector_graphics = new scalable_vector_graphics();
-	$scalable_vector_graphics->execute();
+function allow_svg_uploads( $existing_mime_types = array() ) {
+	return add_mime_type( $existing_mime_types );
 }
+
+function get_dimensions( $svg ) {
+	$svg = simplexml_load_file( $svg );
+	$attributes = $svg->attributes();
+	$width = (string) $attributes->width;
+	$height = (string) $attributes->height;
+
+	return (object) array( 'width' => $width, 'height' => $height );
+}
+
+function adjust_response_for_svg( $response, $attachment, $meta ) {
+	if( $response['mime'] == 'image/svg+xml' && empty( $response['sizes'] ) ) {
+		$svg_file_path = get_attached_file( $attachment->ID );
+		$dimensions = get_dimensions( $svg_file_path );
+
+		$response[ 'sizes' ] = array(
+				'full' => array(
+					'url' => $response[ 'url' ],
+					'width' => $dimensions->width,
+					'height' => $dimensions->height,
+					'orientation' => $dimensions->width > $dimensions->height ? 'landscape' : 'portrait'
+			)
+		);
+	}
+
+	return $response;
+}
+
+function enable_svg_mime_type() {
+	add_filter( 'upload_mimes', __NAMESPACE__ . '\\allow_svg_uploads' );
+	add_filter( 'wp_prepare_attachment_for_js', __NAMESPACE__ . '\\adjust_response_for_svg', 10, 3 );
+}
+
+function styles() {
+	wp_add_inline_style( 'wp-admin', ".media .media-icon img[src$='.svg'] { width: auto; height: auto; }" );
+	wp_add_inline_style( 'wp-admin', "#postimagediv .inside img[src$='.svg'] { width: 100%; height: auto; }" );
+}
+
+enable_svg_mime_type();
+add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\styles' );
 
 ?>
