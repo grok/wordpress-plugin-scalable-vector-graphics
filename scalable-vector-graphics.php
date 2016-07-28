@@ -15,12 +15,12 @@
 
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
  * GNU General Public License for more details.
 
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA	02110-1301, USA.
 */
 
 class scalable_vector_graphics {
@@ -32,6 +32,7 @@ class scalable_vector_graphics {
 
 	private function _enable_svg_mime_type() {
 		add_filter( 'upload_mimes', array( &$this, 'allow_svg_uploads' ) );
+		add_filter( 'wp_prepare_attachment_for_js', array( &$this, 'plugin_prepare_attachment_for_js_filter' ), 10, 3 );
 	}
 
 	public function allow_svg_uploads( $existing_mime_types = array() ) {
@@ -46,6 +47,33 @@ class scalable_vector_graphics {
 
 	public function styles() {
 		wp_add_inline_style( 'wp-admin', "img.attachment-80x60[src$='.svg'] { width: 100%; height: auto; }" );
+	}
+
+	public function plugin_prepare_attachment_for_js_filter( $response, $attachment, $meta ) {
+		if( $response['mime'] == 'image/svg+xml' && empty( $response['sizes'] ) ) {
+			$svg_file_path = get_attached_file( $attachment->ID );
+			$dimensions = $this->_get_dimensions( $svg_file_path );
+
+			$response[ 'sizes' ] = array(
+					'full' => array(
+						'url' => $response[ 'url' ],
+						'width' => $dimensions->width,
+						'height' => $dimensions->height,
+						'orientation' => $dimensions->width > $dimensions->height ? 'landscape' : 'portrait'
+				)
+			);
+		}
+
+		return $response;
+	}
+
+	private function _get_dimensions( $svg ) {
+		$svg = simplexml_load_file( $svg );
+		$attributes = $svg->attributes();
+		$width = (string) $attributes->width;
+		$height = (string) $attributes->height;
+
+		return (object) array( 'width' => $width, 'height' => $height );
 	}
 }
 
