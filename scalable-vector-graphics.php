@@ -1,11 +1,11 @@
 <?php
 /*
  * Plugin Name: Scalable Vector Graphics (SVG)
- * Plugin URI: http://sterlinghamilton.com/projects/scalable-vector-graphics-svg/
+ * Plugin URI: http://www.sterlinghamilton.com/projects/scalable-vector-graphics/
  * Description: Scalable Vector Graphics are two-dimensional vector graphics, that can be both static and dynamic. This plugin allows your to easily use them on your site.
- * Version: 2.3.1
+ * Version: 3.0
  * Author: Sterling Hamilton
- * Author URI: http://sterlinghamilton.com
+ * Author URI: http://www.sterlinghamilton.com/
  * License: GPLv2 or later
 
  * This program is free software; you can redistribute it and/or
@@ -27,32 +27,7 @@ class scalable_vector_graphics {
 
 	public function execute() {
 		$this->_enable_svg_mime_type();
-		add_filter( 'wp_handle_upload_prefilter', array( $this, 'sanitize_svg' ) );
 		add_action( 'admin_enqueue_scripts', array( $this, 'styles' ) );
-	}
-
-	// Here we use a whitelist library to attempt at sanitizing potential security threats.
-	public function sanitize_svg( $file ) {
-		if( $file[ 'type' ] == 'image/svg+xml' ) {
-			require_once 'library/class.svg-sanitizer.php';
-
-			$svg = new SvgSanitizer();
-			// We read in the temporary file prior to WordPress moving it.
-			$svg->load( $file[ 'tmp_name' ] );
-			$svg->sanitize();
-			$sanitized_svg = $svg->saveSVG();
-
-			global $wp_filesystem;
-			$credentials = request_filesystem_credentials(site_url() . '/wp-admin/', '', FALSE, FALSE, array());
-			if ( ! WP_Filesystem( $credentials ) ) {
-				request_filesystem_credentials( site_url() . '/wp-admin/', '', TRUE, FALSE, NULL );
-			}
-
-			// Using the filesystem API provided by WordPress, we replace the contents of the temporary file and then let the process continue as normal.
-			$replace_uploaded_file = $wp_filesystem->put_contents($file['tmp_name'], $sanitized_svg, FS_CHMOD_FILE);
-		}
-
-		return $file;
 	}
 
 	private function _enable_svg_mime_type() {
