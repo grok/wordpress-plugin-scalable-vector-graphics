@@ -25,16 +25,17 @@
 
 namespace SterlingHamilton\Plugins\ScalableVectorGraphics;
 
-function add_mime_type( $mime_types ) {
-	$mime_types[ 'svg' ] = 'image/svg+xml';
-
-	return $mime_types;
-}
-
+// Return the accepted value for SVG mime-types in compliance with the RFC 3023.
+// RFC 3023: https://www.ietf.org/rfc/rfc3023.txt 8.19, A.1, A.2, A.3, A.5, and A.7
+// Expects to interface with https://codex.wordpress.org/Plugin_API/Filter_Reference/upload_mimes
 function allow_svg_uploads( $existing_mime_types = array() ) {
-	return add_mime_type( $existing_mime_types );
+	return array( 'svg' => 'image/svg+xml' );
 }
 
+// This is a decent way of grabbing the dimensions of SVG files.
+// Depends on http://php.net/manual/en/function.simplexml-load-file.php
+// I believe this to be a reasonable dependency and should be common enough to
+// not cause problems.
 function get_dimensions( $svg ) {
 	$svg = simplexml_load_file( $svg );
 	$attributes = $svg->attributes();
@@ -44,6 +45,12 @@ function get_dimensions( $svg ) {
 	return (object) array( 'width' => $width, 'height' => $height );
 }
 
+// Browsers may or may not show SVG files properly without a height/width.
+// WordPress specifically defines width/height as "0" if it cannot figure it out.
+// Thus the below is needed.
+//
+// Consider this the "server side" fix for dimensions.
+// Which is needed for the Media Grid within the Administration area.
 function adjust_response_for_svg( $response, $attachment, $meta ) {
 	if( $response['mime'] == 'image/svg+xml' && empty( $response['sizes'] ) ) {
 		$svg_file_path = get_attached_file( $attachment->ID );
@@ -61,18 +68,25 @@ function adjust_response_for_svg( $response, $attachment, $meta ) {
 
 	return $response;
 }
-
-function enable_svg_mime_type() {
-	add_filter( 'upload_mimes', __NAMESPACE__ . '\\allow_svg_uploads' );
-	add_filter( 'wp_prepare_attachment_for_js', __NAMESPACE__ . '\\adjust_response_for_svg', 10, 3 );
-}
-
+// Browsers may or may not show SVG files properly without a height/width.
+// WordPress specifically defines width/height as "0" if it cannot figure it out.
+// Thus the below is needed.
+//
+// Consider this the "client side" fix for dimensions.
+//
+// WordPress requires inline administration styles to be wrapped in an actionable function.
+// These styles specifically address the Media Listing styling and Featured Image
+// styling so that the images show up in the Administration area.
 function styles() {
+	// Media Listing Fix
 	wp_add_inline_style( 'wp-admin', ".media .media-icon img[src$='.svg'] { width: auto; height: auto; }" );
+	// Featured Image Fix
 	wp_add_inline_style( 'wp-admin', "#postimagediv .inside img[src$='.svg'] { width: 100%; height: auto; }" );
 }
 
-enable_svg_mime_type();
+// Do work son.
+add_filter( 'upload_mimes', __NAMESPACE__ . '\\allow_svg_uploads' );
+add_filter( 'wp_prepare_attachment_for_js', __NAMESPACE__ . '\\adjust_response_for_svg', 10, 3 );
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\styles' );
 
 ?>
