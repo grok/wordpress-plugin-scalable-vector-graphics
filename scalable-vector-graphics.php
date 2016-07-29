@@ -29,7 +29,7 @@ namespace SterlingHamilton\Plugins\ScalableVectorGraphics;
 // RFC 3023: https://www.ietf.org/rfc/rfc3023.txt 8.19, A.1, A.2, A.3, A.5, and A.7
 // Expects to interface with https://codex.wordpress.org/Plugin_API/Filter_Reference/upload_mimes
 function allow_svg_uploads( $existing_mime_types = array() ) {
-	return array( 'svg' => 'image/svg+xml' );
+	return $existing_mime_types + array( 'svg' => 'image/svg+xml' );
 }
 
 // This is a decent way of grabbing the dimensions of SVG files.
