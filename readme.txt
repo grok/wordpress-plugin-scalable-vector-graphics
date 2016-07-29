@@ -1,9 +1,9 @@
 === Scalable Vector Graphics (SVG) ===
 Contributors: sterlo
-Donate link: http://sterlinghamilton.com/
-Tags: svg, scalable, vector, graphics, mime, type, images, uploads
+Donate link: http://www.sterlinghamilton.com/projects/scalable-vector-graphics/
+Tags: svg, scalable, vector, mime, type, image, graphic, file, upload
 Requires at least: 3.0
-Tested up to: 4.0-beta1
+Tested up to: 4.5.3
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -14,7 +14,7 @@ SVG files are two-dimensional vector graphics, that can be both static and dynam
 
 SVG files are two-dimensional vector graphics, that can be both static and dynamic. This plugin allows you to easily use them on your site.
 
-The main project page is located here: [http://sterlinghamilton.com/projects/scalable-vector-graphics-svg/](http://sterlinghamilton.com/projects/scalable-vector-graphics-svg/ "Scalable Vector Graphics (SVG) | Sterling Hamilton")
+The main project page is located here: [http://www.sterlinghamilton.com/projects/scalable-vector-graphics/](http://www.sterlinghamilton.com/projects/scalable-vector-graphics/ "Scalable Vector Graphics (SVG) | Sterling Hamilton")
 
 Warning: Understanding that uploading any file to the system is a potential security risk, it is strongly recommended to only let trusted users to have upload privileges.
 
@@ -25,9 +25,22 @@ Resources for understanding security risks:
 
 == Installation ==
 
-1. Upload `scalable-vector-graphics.php` to the `/wp-content/plugins/` directory
+=== Manually ===
+1. Upload scalable-vector-graphics-svg into your plugins directory.
 1. Activate the plugin through the 'Plugins' menu in WordPress
 1. Use SVG files just like you would use a normal image file.
+
+=== Plugin Manager ===
+1. Go to your plugin manager, located generally at ``/wp-admin/plugins.php`
+1. Click "Add New"
+1. Search for "Scalable Vector Graphics SVG"
+1. Click "Install Now"
+1. Click "Activate Plugin"
+
+=== WP-CLI ===
+1. Be in the root of your WordPress installation.
+1. Run `wp plugin install scalable-vector-graphics-svg`
+1. Run `wp activate scalable-vector-graphics-svg`
 
 == Changelog ==
 
@@ -49,5 +62,12 @@ Resources for understanding security risks:
 * The security cannot be perfect and it is recommended to only provide upload privileges to trusted users.
 * Props to thedwards for bringing this to my attention.
 = 2.3.1 =
-* Added inline styling to tha administration area so SVG attachments will show up in list/grid views.
+* Added inline styling to the administration area so SVG attachments will show up in list/grid views.
 * Props to shield-9 (Daisuke Takahashi) for the code.
+= 3.0 =
+* Removed the sanitizer. This plugin isn't about security. It's about letting you use SVG files easily.
+* Added more styling to improve Media Manager, including adjustments Grid View and Listing View
+* Added additional styling to allow for SVG files to show for Featured Images.
+* Reduced overall code footprint and complexity.
+* Added code documentation.
+* Resolved several serverside issues you may have been encountering having to do with security related stuff.
