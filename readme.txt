@@ -44,6 +44,10 @@ Resources for understanding security risks:
 
 == Changelog ==
 
+= 3.2 =
+* Created End User styles to allow for the front of the site to display SVG files properly.
+= 3.1 =
+* Fix mime-type issues. Changed too much too quickly. BAD DEVELOPER.
 = 3.0 =
 * Removed the sanitizer. This plugin isn't about security. It's about letting you use SVG files easily.
 * Added more styling to improve Media Manager, including adjustments Grid View and Listing View
