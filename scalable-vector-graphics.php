@@ -50,7 +50,7 @@ function get_dimensions( $svg ) {
 // Thus the below is needed.
 //
 // Consider this the "server side" fix for dimensions.
-// Which is needed for the Media Grid within the Administration area.
+// Which is needed for the Media Grid within the Administratior.
 function adjust_response_for_svg( $response, $attachment, $meta ) {
 	if( $response['mime'] == 'image/svg+xml' && empty( $response['sizes'] ) ) {
 		$svg_file_path = get_attached_file( $attachment->ID );
@@ -72,7 +72,7 @@ function adjust_response_for_svg( $response, $attachment, $meta ) {
 // WordPress specifically defines width/height as "0" if it cannot figure it out.
 // Thus the below is needed.
 //
-// Consider this the "client side" fix for dimensions. But only for the Administration.
+// Consider this the "client side" fix for dimensions. But only for the Administratior.
 //
 // WordPress requires inline administration styles to be wrapped in an actionable function.
 // These styles specifically address the Media Listing styling and Featured Image
