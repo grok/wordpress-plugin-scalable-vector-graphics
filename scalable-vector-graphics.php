@@ -72,21 +72,32 @@ function adjust_response_for_svg( $response, $attachment, $meta ) {
 // WordPress specifically defines width/height as "0" if it cannot figure it out.
 // Thus the below is needed.
 //
-// Consider this the "client side" fix for dimensions.
+// Consider this the "client side" fix for dimensions. But only for the Administration.
 //
 // WordPress requires inline administration styles to be wrapped in an actionable function.
 // These styles specifically address the Media Listing styling and Featured Image
 // styling so that the images show up in the Administration area.
-function styles() {
+function administration_styles() {
 	// Media Listing Fix
 	wp_add_inline_style( 'wp-admin', ".media .media-icon img[src$='.svg'] { width: auto; height: auto; }" );
 	// Featured Image Fix
 	wp_add_inline_style( 'wp-admin', "#postimagediv .inside img[src$='.svg'] { width: 100%; height: auto; }" );
 }
 
+// Browsers may or may not show SVG files properly without a height/width.
+// WordPress specifically defines width/height as "0" if it cannot figure it out.
+// Thus the below is needed.
+//
+// Consider this the "client side" fix for dimensions. But only for the End User.
+function public_styles() {
+	// Featured Image Fix
+	echo "<style>.post-thumbnail img[src$='.svg'] { width: 100%; height: auto; }</style>";
+}
+
 // Do work son.
 add_filter( 'upload_mimes', __NAMESPACE__ . '\\allow_svg_uploads' );
 add_filter( 'wp_prepare_attachment_for_js', __NAMESPACE__ . '\\adjust_response_for_svg', 10, 3 );
-add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\styles' );
+add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\administration_styles' );
+add_action( 'wp_head', __NAMESPACE__ . '\\public_styles' );
 
 ?>
