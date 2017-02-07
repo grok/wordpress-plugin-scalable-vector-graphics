@@ -44,6 +44,8 @@ Resources for understanding security risks:
 
 == Changelog ==
 
+= 3.3 =
+* Add a patch for core bug introduced in 4.7.1
 = 3.2 =
 * Created End User styles to allow for the front of the site to display SVG files properly.
 = 3.1 =
