@@ -1,9 +1,9 @@
 === Scalable Vector Graphics (SVG) ===
 Contributors: sterlo
 Donate link: http://www.sterlinghamilton.com/projects/scalable-vector-graphics/
-Tags: svg, scalable, vector, mime, type, image, graphic, file, upload
+Tags: svg, scalable, vector, mime, type, image, graphic, file, upload, media
 Requires at least: 3.0
-Tested up to: 4.5.3
+Tested up to: 4.7.2
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -40,7 +40,7 @@ Resources for understanding security risks:
 = WP CLI =
 1. Be in the root of your WordPress installation.
 1. Run `wp plugin install scalable-vector-graphics-svg`.
-1. Run `wp activate scalable-vector-graphics-svg`.
+1. Run `wp plugin activate scalable-vector-graphics-svg`.
 
 == Changelog ==
 
