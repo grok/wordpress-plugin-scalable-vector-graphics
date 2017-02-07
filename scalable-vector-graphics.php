@@ -3,7 +3,7 @@
  * Plugin Name: Scalable Vector Graphics (SVG)
  * Plugin URI: http://www.sterlinghamilton.com/projects/scalable-vector-graphics/
  * Description: Scalable Vector Graphics are two-dimensional vector graphics, that can be both static and dynamic. This plugin allows your to easily use them on your site.
- * Version: 3.2
+ * Version: 3.3
  * Author: Sterling Hamilton
  * Author URI: http://www.sterlinghamilton.com/
  * License: GPLv2 or later
@@ -53,7 +53,7 @@ function get_dimensions( $svg ) {
 //
 // Consider this the "server side" fix for dimensions.
 // Which is needed for the Media Grid within the Administration area.
-function adjust_response_for_svg( $response, $attachment, $meta ) {
+function set_dimensions( $response, $attachment, $meta ) {
 	if( $response['mime'] == 'image/svg+xml' && empty( $response['sizes'] ) ) {
 		$svg_file_path = get_attached_file( $attachment->ID );
 		$dimensions = get_dimensions( $svg_file_path );
@@ -70,6 +70,7 @@ function adjust_response_for_svg( $response, $attachment, $meta ) {
 
 	return $response;
 }
+
 // Browsers may or may not show SVG files properly without a height/width.
 // WordPress specifically defines width/height as "0" if it cannot figure it out.
 // Thus the below is needed.
@@ -97,9 +98,9 @@ function public_styles() {
 }
 
 // Restores the ability to upload non-image files in WordPress 4.7.1 and 4.7.2.
-// @TODO: Remove the plugin once WordPress 4.7.3 is available!
 // Related Trac Ticket: https://core.trac.wordpress.org/ticket/39550
 // Credit: @sergeybiryukov
+// @TODO: Remove the plugin once WordPress 4.7.3 is available!
 function disable_real_mime_check( $data, $file, $filename, $mimes ) {
 	$wp_filetype = wp_check_filetype( $filename, $mimes );
 
@@ -110,12 +111,11 @@ function disable_real_mime_check( $data, $file, $filename, $mimes ) {
 	return compact( 'ext', 'type', 'proper_filename' );
 }
 
-// Do work son.
 if($wordpress_version < "4.7.3") {
 	add_filter( 'wp_check_filetype_and_ext', __NAMESPACE__ . '\\disable_real_mime_check', 10, 4 );
 }
 add_filter( 'upload_mimes', __NAMESPACE__ . '\\allow_svg_uploads' );
-add_filter( 'wp_prepare_attachment_for_js', __NAMESPACE__ . '\\adjust_response_for_svg', 10, 3 );
+add_filter( 'wp_prepare_attachment_for_js', __NAMESPACE__ . '\\set_dimensions', 10, 3 );
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\administration_styles' );
 add_action( 'wp_head', __NAMESPACE__ . '\\public_styles' );
 
