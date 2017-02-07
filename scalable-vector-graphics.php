@@ -25,6 +25,8 @@
 
 namespace SterlingHamilton\Plugins\ScalableVectorGraphics;
 
+$wordpress_version = get_bloginfo('version');
+
 // Return the accepted value for SVG mime-types in compliance with the RFC 3023.
 // RFC 3023: https://www.ietf.org/rfc/rfc3023.txt 8.19, A.1, A.2, A.3, A.5, and A.7
 // Expects to interface with https://codex.wordpress.org/Plugin_API/Filter_Reference/upload_mimes
@@ -50,7 +52,7 @@ function get_dimensions( $svg ) {
 // Thus the below is needed.
 //
 // Consider this the "server side" fix for dimensions.
-// Which is needed for the Media Grid within the Administratior.
+// Which is needed for the Media Grid within the Administration area.
 function adjust_response_for_svg( $response, $attachment, $meta ) {
 	if( $response['mime'] == 'image/svg+xml' && empty( $response['sizes'] ) ) {
 		$svg_file_path = get_attached_file( $attachment->ID );
@@ -72,7 +74,7 @@ function adjust_response_for_svg( $response, $attachment, $meta ) {
 // WordPress specifically defines width/height as "0" if it cannot figure it out.
 // Thus the below is needed.
 //
-// Consider this the "client side" fix for dimensions. But only for the Administratior.
+// Consider this the "client side" fix for dimensions. But only for the Administration.
 //
 // WordPress requires inline administration styles to be wrapped in an actionable function.
 // These styles specifically address the Media Listing styling and Featured Image
@@ -94,7 +96,24 @@ function public_styles() {
 	echo "<style>.post-thumbnail img[src$='.svg'] { width: 100%; height: auto; }</style>";
 }
 
+// Restores the ability to upload non-image files in WordPress 4.7.1 and 4.7.2.
+// @TODO: Remove the plugin once WordPress 4.7.3 is available!
+// Related Trac Ticket: https://core.trac.wordpress.org/ticket/39550
+// Credit: @sergeybiryukov
+function disable_real_mime_check( $data, $file, $filename, $mimes ) {
+	$wp_filetype = wp_check_filetype( $filename, $mimes );
+
+	$ext = $wp_filetype['ext'];
+	$type = $wp_filetype['type'];
+	$proper_filename = $data['proper_filename'];
+
+	return compact( 'ext', 'type', 'proper_filename' );
+}
+
 // Do work son.
+if($wordpress_version < "4.7.3") {
+	add_filter( 'wp_check_filetype_and_ext', __NAMESPACE__ . '\\disable_real_mime_check', 10, 4 );
+}
 add_filter( 'upload_mimes', __NAMESPACE__ . '\\allow_svg_uploads' );
 add_filter( 'wp_prepare_attachment_for_js', __NAMESPACE__ . '\\adjust_response_for_svg', 10, 3 );
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\\administration_styles' );
