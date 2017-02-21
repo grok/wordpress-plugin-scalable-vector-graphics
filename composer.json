@@ -1,0 +1,10 @@
+{
+    "name": "grok/wordpress-plugin-scalable-vector-graphics",
+    "description": "Scalable Vector Graphics are two-dimensional vector graphics, that can be both static and dynamic. This plugin allows your to easily use them on your site.",
+    "type": "wordpress-plugin",
+    "require": {
+        "press-bits/media-library-svg-display": "^0.1.0"
+    },
+    "license": "GPL2+",
+    "minimum-stability": "dev"
+}
