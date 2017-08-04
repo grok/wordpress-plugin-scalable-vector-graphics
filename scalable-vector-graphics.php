@@ -1,11 +1,11 @@
 <?php
 /*
  * Plugin Name: Scalable Vector Graphics (SVG)
- * Plugin URI: http://www.sterlinghamilton.com/projects/scalable-vector-graphics/
+ * Plugin URI: https://sterlinghamilton.com/projects/scalable-vector-graphics/
  * Description: Scalable Vector Graphics are two-dimensional vector graphics, that can be both static and dynamic. This plugin allows your to easily use them on your site.
- * Version: 3.3
+ * Version: 3.4
  * Author: Sterling Hamilton
- * Author URI: http://www.sterlinghamilton.com/
+ * Author URI: https://sterlinghamilton.com/
  * License: GPLv2 or later
 
  * This program is free software; you can redistribute it and/or
