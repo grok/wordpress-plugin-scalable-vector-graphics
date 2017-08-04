@@ -39,8 +39,24 @@ function allow_svg_uploads( $existing_mime_types = array() ) {
 // I believe this to be a reasonable dependency and should be common enough to
 // not cause problems.
 function get_dimensions( $svg ) {
+	// Sometimes, for whatever reason, we still cannot get the attributes.
+	// If that happens, we will just go back to not knowing the dimensions,
+	// rather than breaking the site.
+	var $fail = (object) array( 'width' => 0, 'height' => 0 );
+
+	// Welp, nothing we can do here...
+	if ( ! function_exists( 'simplexml_load_file' ) ) {
+		return $fail;
+	}
+
 	$svg = simplexml_load_file( $svg );
-	$attributes = $svg->attributes();
+	$attributes = $svg ? $svg->attributes() : false;
+
+	// Probably an invalid XML file?
+	if( ! $attributes ) {
+		return $fail;
+	}
+
 	$width = (string) $attributes->width;
 	$height = (string) $attributes->height;
 
