@@ -1,9 +1,9 @@
 === Scalable Vector Graphics (SVG) ===
 Contributors: sterlo
-Donate link: http://www.sterlinghamilton.com/projects/scalable-vector-graphics/
+Donate link: https://sterlinghamilton.com/projects/scalable-vector-graphics/
 Tags: svg, scalable, vector, mime, type, image, graphic, file, upload, media
 Requires at least: 3.0
-Tested up to: 4.7.2
+Tested up to: 4.8.1
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -14,7 +14,7 @@ SVG files are two-dimensional vector graphics, that can be both static and dynam
 
 SVG files are two-dimensional vector graphics, that can be both static and dynamic. This plugin allows you to easily use them on your site.
 
-The main project page is located here: [http://www.sterlinghamilton.com/projects/scalable-vector-graphics/](http://www.sterlinghamilton.com/projects/scalable-vector-graphics/ "Scalable Vector Graphics (SVG) | Sterling Hamilton")
+The main project page is located here: [https://sterlinghamilton.com/projects/scalable-vector-graphics/](https://sterlinghamilton.com/projects/scalable-vector-graphics/ "Scalable Vector Graphics (SVG) | Sterling Hamilton")
 
 Warning: Understanding that uploading any file to the system is a potential security risk, it is strongly recommended to only let trusted users to have upload privileges.
 
@@ -44,6 +44,8 @@ Resources for understanding security risks:
 
 == Changelog ==
 
+= 3.4 =
+* Resolve fatal errors for people who have the core php libraries for xml uninstalled, or have invalid xml files.
 = 3.3 =
 * Add a patch for core bug introduced in 4.7.1
 = 3.2 =
