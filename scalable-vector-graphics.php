@@ -42,7 +42,7 @@ function get_dimensions( $svg ) {
 	// Sometimes, for whatever reason, we still cannot get the attributes.
 	// If that happens, we will just go back to not knowing the dimensions,
 	// rather than breaking the site.
-	var $fail = (object) array( 'width' => 0, 'height' => 0 );
+	$fail = (object) array( 'width' => 0, 'height' => 0 );
 
 	// Welp, nothing we can do here...
 	if ( ! function_exists( 'simplexml_load_file' ) ) {
